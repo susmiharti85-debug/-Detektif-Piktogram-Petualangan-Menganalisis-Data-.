@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detektif Piktogram - Game Matematika Kelas 5 SD</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Nunito (Sangat ramah anak dan mudah dibaca) -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+        }
+        /* Animasi kustom untuk memberikan efek interaktif */
+        @keyframes bounce-slow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .animate-bounce-slow {
+            animation: bounce-slow 3s infinite;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+        .pulse-btn {
+            animation: pulse-ring 2s infinite;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 via-teal-50 to-emerald-50 min-h-screen text-slate-800 flex flex-col justify-between">
+
+    <!-- HEADER -->
+    <header class="bg-white shadow-md border-b-4 border-teal-400 py-3 px-6 sticky top-0 z-40">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="showScreen('home')">
+                <span class="text-3xl md:text-4xl animate-bounce-slow">🔍</span>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-black text-teal-600 tracking-wide uppercase">Detektif Piktogram</h1>
+                    <p class="text-xs text-slate-500 font-semibold">Matematika Kelas 5 • Membaca & Menganalisis Data</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div id="scoreDisplay" class="hidden bg-amber-100 border-2 border-amber-400 px-3 py-1 rounded-full text-amber-800 font-bold text-sm md:text-base flex items-center space-x-1">
+                    <span>🌟 Score:</span>
+                    <span id="globalScore">0</span>
+                </div>
+                <button onclick="showScreen('home')" class="bg-slate-100 hover:bg-slate-200 border-b-2 border-slate-400 px-3 py-1.5 rounded-xl text-sm font-bold transition flex items-center space-x-1">
+                    <span>🏠 Menu</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="max-w-6xl mx-auto p-4 md:p-6 flex-grow w-full flex flex-col justify-center">
+
+        <!-- SCREEN: HOME / MENU UTAMA -->
+        <div id="screen-home" class="screen-view flex flex-col items-center justify-center text-center space-y-8 py-4">
+            <div class="max-w-2xl space-y-4">
+                <span class="text-7xl md:text-8xl inline-block animate-bounce-slow">🕵️‍♂️📊</span>
+                <h2 class="text-3xl md:text-5xl font-extrabold text-slate-800 leading-tight">
+                    Ayo Menjadi <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-blue-600">Detektif Data!</span>
+                </h2>
+                <p class="text-base md:text-lg text-slate-600 font-medium px-4">
+                    Selamat datang, Detektif Muda! Pecahkan berbagai misteri seru di kota dengan kemampuan membaca, membuat, dan menganalisis diagram gambar (piktogram).
+                </p>
+            </div>
+
+            <!-- Menu Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl px-4">
+                <!-- Card 1: Belajar -->
+                <div class="bg-white p-6 rounded-3xl border-4 border-sky-400 hover:border-sky-500 shadow-lg transform hover:-translate-y-2 transition duration-300 flex flex-col justify-between items-center text-center space-y-4">
+                    <span class="text-5xl">📖</span>
+                    <div>
+                        <h3 class="text-xl font-bold text-sky-600">1. Belajar Piktogram</h3>
+                        <p class="text-sm text-slate-500 mt-1">Pahami konsep dasar, kunci skala, dan simbol setengah.</p>
+                    </div>
+                    <button onclick="startTutorial()" class="w-full bg-sky-500 hover:bg-sky-600 border-b-4 border-sky-700 text-white font-bold py-2.5 px-4 rounded-2xl transition">
+                        Mulai Belajar
+                    </button>
+                </div>
+
+                <!-- Card 2: Laboratorium (Membuat) -->
+                <div class="bg-white p-6 rounded-3xl border-4 border-emerald-400 hover:border-emerald-500 shadow-lg transform hover:-translate-y-2 transition duration-300 flex flex-col justify-between items-center text-center space-y-4">
+                    <span class="text-5xl">🧪</span>
+                    <div>
+                        <h3 class="text-xl font-bold text-emerald-600">2. Laboratorium Data</h3>
+                        <p class="text-sm text-slate-500 mt-1">Latihan seru menyusun piktogrammu sendiri sesuai tabel data.</p>
+                    </div>
+                    <button onclick="startMaker()" class="w-full bg-emerald-500 hover:bg-emerald-600 border-b-4 border-emerald-700 text-white font-bold py-2.5 px-4 rounded-2xl transition">
+                        Masuk Lab
+                    </button>
+                </div>
+
+                <!-- Card 3: Tantangan Detektif -->
+                <div class="bg-white p-6 rounded-3xl border-4 border-indigo-400 hover:border-indigo-500 shadow-lg transform hover:-translate-y-2 transition duration-300 flex flex-col justify-between items-center text-center space-y-4">
+                    <span class="text-5xl">🕵️‍♀️</span>
+                    <div>
+                        <h3 class="text-xl font-bold text-indigo-600">3. Misi Detektif</h3>
+                        <p class="text-sm text-slate-500 mt-1">Selesaikan misteri analisis data & dapatkan sertifikat!</p>
+                    </div>
+                    <button onclick="startQuiz()" class="w-full bg-indigo-500 hover:bg-indigo-600 border-b-4 border-indigo-700 text-white font-bold py-2.5 px-4 rounded-2xl transition pulse-btn">
+                        Mulai Misi
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN: TUTORIAL INTERAKTIF -->
+        <div id="screen-tutorial" class="screen-view hidden max-w-4xl mx-auto bg-white rounded-3xl shadow-xl border-4 border-sky-300 overflow-hidden flex flex-col">
+            <div class="bg-gradient-to-r from-sky-400 to-blue-500 p-5 text-white flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <span class="text-2xl">💡</span>
+                    <h3 class="font-extrabold text-lg md:text-xl">Sekolah Detektif: Belajar Piktogram</h3>
+                </div>
+                <span id="tutorial-step-indicator" class="bg-sky-600 text-xs font-bold px-3 py-1 rounded-full">Halaman 1 dari 4</span>
+            </div>
+            
+            <div class="p-6 md:p-8 flex-grow">
+                <!-- Slide Content Container -->
+                <div id="tutorial-slide-content" class="min-h-[300px] flex flex-col justify-center">
+                    <!-- Dinamis terisi oleh JavaScript -->
+                </div>
+            </div>
+
+            <div class="bg-slate-50 p-4 border-t-2 border-slate-100 flex justify-between items-center">
+                <button id="btn-prev-slide" onclick="changeSlide(-1)" class="bg-slate-300 hover:bg-slate-400 text-slate-700 font-bold py-2 px-5 rounded-xl transition disabled:opacity-50" disabled>
+                    Kembali
+                </button>
+                <div class="flex space-x-1" id="slide-dots">
+                    <!-- Slide dots -->
+                </div>
+                <button id="btn-next-slide" onclick="changeSlide(1)" class="bg-sky-500 hover:bg-sky-600 border-b-4 border-sky-700 text-white font-bold py-2 px-5 rounded-xl transition">
+                    Lanjut
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN: LABORATORIUM DATA (MAKER) -->
+        <div id="screen-maker" class="screen-view hidden max-w-5xl mx-auto bg-white rounded-3xl shadow-xl border-4 border-emerald-400 overflow-hidden">
+            <div class="bg-gradient-to-r from-emerald-400 to-teal-500 p-5 text-white flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <span class="text-2xl">🧪</span>
+                    <h3 class="font-extrabold text-lg md:text-xl">Laboratorium Piktogram</h3>
+                </div>
+                <div class="bg-emerald-600 text-xs font-bold px-3 py-1 rounded-full">Latihan Konstruksi</div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 p-6">
+                <!-- Kiri: Petunjuk & Tabel Target -->
+                <div class="lg:col-span-5 space-y-4">
+                    <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl">
+                        <h4 class="font-bold text-emerald-800 flex items-center mb-1">
+                            <span class="mr-1.5">📝</span> Petunjuk Lab:
+                        </h4>
+                        <p class="text-sm text-slate-600 leading-relaxed" id="maker-instruction">
+                            Buatlah piktogram berdasarkan tabel data di bawah ini! Klik tombol <strong class="text-emerald-600">+</strong> untuk menambah gambar, atau <strong class="text-rose-600">-</strong> untuk mengurangi gambar.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-50 border-2 border-slate-200 p-4 rounded-2xl shadow-sm">
+                        <h4 class="font-extrabold text-slate-700 text-center mb-2 uppercase tracking-wider text-sm">📋 Tabel Data Target</h4>
+                        <div class="overflow-hidden rounded-xl border border-slate-200">
+                            <table class="min-w-full divide-y divide-slate-200">
+                                <thead class="bg-slate-100">
+                                    <tr>
+                                        <th id="maker-table-header-col1" class="px-4 py-2 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Kategori</th>
+                                        <th id="maker-table-header-col2" class="px-4 py-2 text-center text-xs font-bold text-slate-500 uppercase tracking-wider">Jumlah Data</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="maker-table-body" class="bg-white divide-y divide-slate-100 font-semibold text-sm">
+                                    <!-- Terisi dinamis -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="bg-amber-50 border-2 border-amber-300 p-4 rounded-2xl flex items-center space-x-3">
+                        <span class="text-3xl">🔑</span>
+                        <div>
+                            <p class="text-xs font-bold text-amber-800 uppercase tracking-wider">Kunci Skala Piktogram:</p>
+                            <p class="text-sm font-black text-amber-900" id="maker-scale-info">1 Simbol (🍎) mewakili 5 Apel</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kanan: Interaksi Piktogram -->
+                <div class="lg:col-span-7 flex flex-col justify-between space-y-6">
+                    <div class="bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl p-4 flex-grow min-h-[300px]">
+                        <h4 class="font-black text-slate-700 text-center text-lg mb-4" id="maker-chart-title">🍎 Piktogram Buatanmu</h4>
+                        
+                        <div id="maker-pictogram-area" class="space-y-4">
+                            <!-- Baris-baris piktogram interaktif akan dibuat di sini secara dinamis -->
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-3">
+                        <button onclick="resetMaker()" class="w-1/3 bg-slate-100 hover:bg-slate-200 border-2 border-slate-300 text-slate-700 font-bold py-3 px-4 rounded-2xl transition">
+                            Atur Ulang
+                        </button>
+                        <button onclick="checkMakerAnswer()" class="w-2/3 bg-emerald-500 hover:bg-emerald-600 border-b-4 border-emerald-700 text-white font-extrabold py-3 px-4 rounded-2xl shadow-md transition transform hover:scale-[1.02] flex justify-center items-center space-x-2">
+                            <span>✅ Periksa Hasil Piktogram</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN: DETEKTIF QUIZ GAME -->
+        <div id="screen-quiz" class="screen-view hidden max-w-5xl mx-auto bg-white rounded-3xl shadow-xl border-4 border-indigo-400 overflow-hidden">
+            <!-- Game Header Status -->
+            <div class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 text-white flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0">
+                <div class="flex items-center space-x-3">
+                    <span class="text-3xl animate-bounce-slow">🕵️‍♂️</span>
+                    <div>
+                        <h3 class="font-black text-lg" id="quiz-case-title">Misi 1: Kasus Toko Kue Ibu</h3>
+                        <p class="text-xs text-indigo-100 font-semibold" id="quiz-case-desc">Bantu Ibu menghitung sisa persediaan kue kering.</p>
+                    </div>
+                </div>
+                <!-- Progress bar di dalam game -->
+                <div class="w-full sm:w-48 bg-indigo-900 rounded-full h-3 overflow-hidden border border-indigo-300">
+                    <div id="quiz-progress" class="bg-yellow-400 h-full transition-all duration-300" style="width: 20%"></div>
+                </div>
+            </div>
+
+            <!-- Game Content -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 p-6">
+                <!-- Kiri: Visual Piktogram yang harus dianalisis -->
+                <div class="lg:col-span-6 flex flex-col justify-between space-y-4">
+                    <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-4 shadow-inner flex-grow flex flex-col justify-center">
+                        <h4 class="font-extrabold text-slate-800 text-center mb-4 text-base md:text-lg border-b pb-2" id="quiz-chart-title">
+                            📊 Piktogram Hasil Penjualan
+                        </h4>
+                        
+                        <div id="quiz-chart-area" class="space-y-4 my-2">
+                            <!-- Area Piktogram Kasus Aktif -->
+                        </div>
+
+                        <!-- Legenda Skala -->
+                        <div class="mt-4 bg-amber-50 border border-amber-200 rounded-xl p-3 flex justify-center items-center space-x-2">
+                            <span class="text-2xl">🔑</span>
+                            <span class="text-xs md:text-sm font-bold text-amber-900" id="quiz-scale-legend">
+                                Keterangan: 1 Simbol mewakili 4 item.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kanan: Pertanyaan & Pilihan Jawaban -->
+                <div class="lg:col-span-6 flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <!-- Kotak Soal -->
+                        <div class="bg-indigo-50 border border-indigo-100 p-5 rounded-2xl">
+                            <div class="flex items-center space-x-1.5 mb-2">
+                                <span class="bg-indigo-600 text-white text-xs font-black px-2.5 py-1 rounded-md" id="question-number-badge">Pertanyaan 1/3</span>
+                                <span class="text-xs text-indigo-700 font-bold">Misi Analisis</span>
+                            </div>
+                            <h4 id="quiz-question-text" class="font-black text-slate-800 text-base md:text-lg leading-snug">
+                                Berapa banyak kue kering rasa cokelat yang berhasil terjual di toko Ibu?
+                            </h4>
+                        </div>
+
+                        <!-- Pilihan Ganda -->
+                        <div id="quiz-options-container" class="space-y-3">
+                            <!-- Pilihan Jawaban akan digenerate dinamis -->
+                        </div>
+                    </div>
+
+                    <!-- Bottom navigation inside quiz / hint -->
+                    <div class="mt-6 flex justify-between items-center bg-slate-50 p-3 rounded-2xl border border-slate-200">
+                        <span class="text-xs text-slate-500 font-bold flex items-center">
+                            <span class="mr-1">💡</span> Butuh bantuan? Hitung total simbol lalu kalikan nilainya!
+                        </span>
+                        <div class="text-xs text-slate-500 font-semibold">
+                            Kasus <span id="quiz-case-index">1</span> dari <span id="quiz-case-total">3</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN: SERTIFIKAT KELULUSAN DETEKTIF -->
+        <div id="screen-certificate" class="screen-view hidden max-w-3xl mx-auto bg-white rounded-3xl shadow-2xl border-8 border-amber-400 p-6 md:p-10 relative overflow-hidden">
+            <!-- Pita Penghargaan / Ribbon -->
+            <div class="absolute -top-10 -right-10 bg-amber-400 text-slate-900 py-12 px-20 transform rotate-45 font-black text-center text-sm tracking-wider shadow">
+                JUARA DATA
+            </div>
+
+            <!-- Bingkai Dalam -->
+            <div class="border-4 border-double border-amber-300 p-6 md:p-8 rounded-2xl text-center space-y-6 flex flex-col items-center">
+                <span class="text-7xl animate-bounce-slow">🏆</span>
+                
+                <div class="space-y-2">
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-amber-600 tracking-wide uppercase">Sertifikat Penghargaan</h2>
+                    <p class="text-xs md:text-sm font-bold tracking-widest text-slate-400 uppercase">Diberikan Kepada Detektif Hebat Matematika</p>
+                </div>
+
+                <!-- Input Nama Interaktif -->
+                <div class="w-full max-w-md space-y-2">
+                    <input type="text" id="cert-name" placeholder="Tulis Namamu di Sini..." class="w-full text-center text-xl md:text-2xl font-black text-slate-800 border-b-4 border-dashed border-teal-400 focus:outline-none focus:border-teal-600 py-1 bg-transparent placeholder-slate-300" value="Detektif Cilik">
+                    <p class="text-xs text-slate-400">Klik teks di atas untuk mengubah namamu</p>
+                </div>
+
+                <div class="max-w-xl text-center space-y-4">
+                    <p class="text-sm md:text-base text-slate-600 leading-relaxed">
+                        Telah berhasil menyelesaikan semua <strong class="text-indigo-600">Misi Analisis Piktogram</strong>, memecahkan misteri pengumpulan data, dan menguasai konsep pembacaan diagram kelas 5 SD dengan nilai sempurna!
+                    </p>
+                    
+                    <div class="inline-block bg-teal-50 border border-teal-200 rounded-full px-6 py-2">
+                        <span class="text-sm font-black text-teal-800">🎖️ Gelar: MASTER ANALIS DATA PIKTOGRAM</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-8 pt-6 w-full max-w-md text-center text-xs text-slate-500 font-bold border-t border-slate-200">
+                    <div>
+                        <p class="text-slate-800 font-black text-sm">Pak Guru Piko</p>
+                        <p class="border-t border-slate-300 mt-1 pt-1">Instruktur Akademi Detektif</p>
+                    </div>
+                    <div>
+                        <p id="cert-date" class="text-slate-800 font-black text-sm">23 Mei 2026</p>
+                        <p class="border-t border-slate-300 mt-1 pt-1">Tanggal Kelulusan</p>
+                    </div>
+                </div>
+
+                <!-- Aksi Sertifikat -->
+                <div class="pt-6 flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 w-full justify-center">
+                    <button onclick="window.print()" class="bg-amber-500 hover:bg-amber-600 text-white font-extrabold py-3 px-6 rounded-2xl transition shadow-md flex items-center justify-center space-x-2">
+                        <span>🖨️ Cetak / Simpan PDF</span>
+                    </button>
+                    <button onclick="showScreen('home')" class="bg-teal-500 hover:bg-teal-600 text-white font-extrabold py-3 px-6 rounded-2xl transition shadow-md flex items-center justify-center">
+                        Main Lagi 🏠
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-800 text-slate-400 text-center py-4 text-xs font-semibold border-t-4 border-slate-700">
+        <div class="max-w-6xl mx-auto px-4">
+            <p>© 2026 Game Detektif Piktogram. Dirancang untuk Kelas 5 Sekolah Dasar.</p>
+            <p class="mt-1 text-slate-500">Membantu mengembangkan kompetensi literasi numerasi & pengolahan data.</p>
+        </div>
+    </footer>
+
+    <!-- MODAL / DIALOG FEEDBACK INTERAKTIF (Menggantikan Alert) -->
+    <div id="custom-modal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 text-center border-4 shadow-2xl transform scale-90 transition-all duration-300 space-y-4" id="modal-container">
+            <span id="modal-icon" class="text-6xl block">🎉</span>
+            <h3 id="modal-title" class="text-2xl font-black">Luar Biasa!</h3>
+            <p id="modal-body" class="text-slate-600 font-semibold text-sm">Jawabanmu tepat sekali. Kamu berbakat jadi detektif!</p>
+            <button id="modal-btn" class="w-full py-2.5 rounded-xl text-white font-black shadow-md transition">
+                Lanjutkan
+            </button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Sound effects generator menggunakan Web Audio API (aman & mandiri tanpa file eksternal)
+        const soundEffects = {
+            ctx: null,
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            },
+            playCorrect() {
+                this.init();
+                const now = this.ctx.currentTime;
+                // Beep ganda manis (nada tinggi)
+                this.playTone(523.25, 0.1, now); // C5
+                this.playTone(659.25, 0.15, now + 0.08); // E5
+                this.playTone(783.99, 0.25, now + 0.16); // G5
+            },
+            playWrong() {
+                this.init();
+                const now = this.ctx.currentTime;
+                // Nada rendah mendengung
+                this.playTone(220, 0.2, now); // A3
+                this.playTone(180, 0.3, now + 0.15); // G#3
+            },
+            playLevelUp() {
+                this.init();
+                const now = this.ctx.currentTime;
+                // Arpeggio kemenangan
+                this.playTone(523.25, 0.1, now);
+                this.playTone(659.25, 0.1, now + 0.1);
+                this.playTone(783.99, 0.1, now + 0.2);
+                this.playTone(1046.50, 0.4, now + 0.3); // C6
+            },
+            playTone(freq, duration, time) {
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, time);
+                
+                gain.gain.setValueAtTime(0.15, time);
+                gain.gain.exponentialRampToValueAtTime(0.01, time + duration);
+                
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                
+                osc.start(time);
+                osc.stop(time + duration);
+            }
+        };
+
+        // State Global Aplikasi
+        let currentScreen = 'home';
+        let globalScore = 0;
+
+        // Navigasi Screen
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen-view').forEach(s => s.classList.add('hidden'));
+            document.getElementById(`screen-${screenId}`).classList.remove('hidden');
+            currentScreen = screenId;
+
+            if (screenId === 'home') {
+                document.getElementById('scoreDisplay').classList.add('hidden');
+            } else {
+                document.getElementById('scoreDisplay').classList.remove('hidden');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Custom Modal helper
+        function showModal(title, text, icon, btnText, btnColorClass, borderClass, callback) {
+            const modal = document.getElementById('custom-modal');
+            const container = document.getElementById('modal-container');
+            const mTitle = document.getElementById('modal-title');
+            const mBody = document.getElementById('modal-body');
+            const mIcon = document.getElementById('modal-icon');
+            const mBtn = document.getElementById('modal-btn');
+
+            mTitle.textContent = title;
+            mBody.textContent = text;
+            mIcon.textContent = icon;
+            mBtn.textContent = btnText;
+            
+            // Atur warna tombol & border container
+            mBtn.className = `w-full py-2.5 rounded-xl text-white font-black shadow-md transition ${btnColorClass}`;
+            container.className = `bg-white rounded-3xl max-w-sm w-full p-6 text-center border-4 shadow-2xl transform transition-all duration-300 space-y-4 ${borderClass}`;
+
+            modal.classList.remove('hidden');
+
+            // Tangani tombol klik ok
+            mBtn.onclick = function() {
+                modal.classList.add('hidden');
+                if (callback) callback();
+            };
+        }
+
+        // --- LOGIKA MODUL BELAJAR ---
+        let currentSlide = 0;
+        const tutorialSlides = [
+            {
+                title: "Apa itu Piktogram?",
+                content: `
+                    <div class="space-y-4 text-center md:text-left">
+                        <div class="flex flex-col md:flex-row items-center gap-6">
+                            <span class="text-7xl md:text-8xl">📊</span>
+                            <div class="space-y-2">
+                                <h4 class="text-xl font-bold text-sky-800">Menyajikan Data dengan Gambar!</h4>
+                                <p class="text-slate-600 leading-relaxed text-sm md:text-base">
+                                    <strong>Piktogram</strong> (atau diagram gambar) adalah cara menyajikan data statistik menggunakan gambar atau simbol yang menarik. Ini memudahkan kita membandingkan data dengan sekali lihat!
+                                </p>
+                                <p class="text-slate-600 leading-relaxed text-sm md:text-base">
+                                    Misalnya, daripada hanya menulis daftar angka, kita bisa memakai simbol boneka untuk data mainan, atau buku untuk data perpustakaan. Seru, kan?
+                                </p>
+                            </div>
+                        </div>
+                        <div class="bg-sky-50 p-4 rounded-2xl border border-sky-100 flex items-center justify-center space-x-3 mt-4">
+                            <span class="text-2xl">💡</span>
+                            <p class="text-xs md:text-sm font-semibold text-sky-900">Piktogram membuat membaca data terasa seperti melihat album foto berwarna!</p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "Rahasia Kunci (Skala) Piktogram",
+                content: `
+                    <div class="space-y-4">
+                        <div class="flex flex-col md:flex-row items-center gap-6">
+                            <span class="text-7xl md:text-8xl">🔑</span>
+                            <div class="space-y-2">
+                                <h4 class="text-xl font-bold text-sky-800">Kenapa Butuh Kunci/Skala?</h4>
+                                <p class="text-slate-600 leading-relaxed text-sm md:text-base">
+                                    Bayangkan kita ingin mendata <strong>100 buah apel</strong>. Jika kita harus menggambar 100 buah apel di kertas, tentu akan sangat melelahkan dan memakan tempat!
+                                </p>
+                                <p class="text-slate-600 leading-relaxed text-sm md:text-base">
+                                    Di sinilah pentingnya <strong>KUNCI (Skala)</strong>. Kita bisa membuat kesepakatan rahasia:
+                                </p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                            <div class="bg-amber-50 p-4 rounded-2xl border-2 border-amber-300 text-center">
+                                <span class="text-3xl block mb-1">🍎</span>
+                                <p class="text-xs font-bold text-amber-800">1 Simbol Apel mewakili</p>
+                                <p class="text-lg font-black text-amber-900">10 Kilogram Apel</p>
+                            </div>
+                            <div class="bg-teal-50 p-4 rounded-2xl border-2 border-teal-300 text-center flex flex-col justify-center items-center">
+                                <p class="text-xs font-semibold text-slate-600">Jadi, jika ada 4 simbol 🍎 di layar, jumlah aslinya adalah:</p>
+                                <p class="text-xl font-black text-teal-800 mt-1">4 × 10 = 40 Kilogram Apel!</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "Misteri Simbol Setengah (Pecahan)",
+                content: `
+                    <div class="space-y-4">
+                        <div class="flex flex-col md:flex-row items-center gap-6">
+                            <span class="text-7xl md:text-8xl">✂️</span>
+                            <div class="space-y-2">
+                                <h4 class="text-xl font-bold text-sky-800">Bagaimana Jika Angkanya Tanggung?</h4>
+                                <p class="text-slate-600 leading-relaxed text-sm md:text-base">
+                                    Jika 1 simbol buku 📘 mewakili <strong>10 buah buku</strong>. Lalu, bagaimana jika kita ingin menggambarkan <strong>5 buah buku</strong> saja?
+                                </p>
+                                <p class="text-slate-600 leading-relaxed text-sm md:text-base">
+                                    Betul sekali! Kita memotong simbol tersebut menjadi <strong>setengah gambar buku ( 📖 )</strong>!
+                                </p>
+                            </div>
+                        </div>
+                        <div class="bg-indigo-50 p-4 rounded-2xl border-2 border-indigo-200 mt-2">
+                            <h5 class="font-extrabold text-indigo-900 mb-2">Ayo hitung contoh berikut:</h5>
+                            <div class="flex items-center space-x-4">
+                                <div class="flex items-center space-x-1">
+                                    <span class="text-3xl">📘</span>
+                                    <span class="text-3xl">📘</span>
+                                    <span class="text-3xl opacity-60 overflow-hidden inline-block w-[18px]">📘</span>
+                                </div>
+                                <span class="text-xl font-bold text-slate-500">=</span>
+                                <div class="text-sm font-bold text-slate-700">
+                                    <p>2 Simbol Utuh (2 × 10 = 20)</p>
+                                    <p>1 Simbol Setengah (setengah dari 10 = 5)</p>
+                                    <p class="text-indigo-600 font-extrabold">Total Buku = 20 + 5 = 25 Buku!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "Uji Kemampuan Detektif Belajar",
+                content: `
+                    <div class="space-y-4 text-center">
+                        <span class="text-6xl block mb-2">🚀</span>
+                        <h4 class="text-xl font-bold text-sky-800">Kamu Siap Berpetualang!</h4>
+                        <p class="text-slate-600 leading-relaxed max-w-xl mx-auto text-sm md:text-base">
+                            Kamu sudah mempelajari 3 senjata rahasia detektif data: 
+                            <strong>Definisi Piktogram</strong>, <strong>Kunci Skala</strong>, dan <strong>Simbol Setengah</strong>.
+                        </p>
+                        <p class="text-slate-600 font-bold max-w-xl mx-auto text-sm">
+                            Mari kita uji kemampuanmu di Laboratorium Konstruksi untuk membuat piktogrammu sendiri, lalu selesaikan misi pemecahan kasus kriminal data di kota!
+                        </p>
+                        <div class="pt-4 flex flex-col sm:flex-row justify-center gap-3">
+                            <button onclick="startMaker()" class="bg-emerald-500 hover:bg-emerald-600 border-b-4 border-emerald-700 text-white font-extrabold py-3 px-6 rounded-2xl shadow-md transition">
+                                Pergi Ke Laboratorium Data 🧪
+                            </button>
+                            <button onclick="startQuiz()" class="bg-indigo-500 hover:bg-indigo-600 border-b-4 border-indigo-700 text-white font-extrabold py-3 px-6 rounded-2xl shadow-md transition">
+                                Selesaikan Misi Detektif 🕵️‍♀️
+                            </button>
+                        </div>
+                    </div>
+                `
+            }
+        ];
+
+        function startTutorial() {
+            currentSlide = 0;
+            showScreen('tutorial');
+            renderSlide();
+        }
+
+        function renderSlide() {
+            const slide = tutorialSlides[currentSlide];
+            document.getElementById('tutorial-step-indicator').textContent = `Halaman ${currentSlide + 1} dari ${tutorialSlides.length}`;
+            
+            // Render Judul dan konten slide
+            let slideHtml = `
+                <h3 class="text-2xl md:text-3xl font-extrabold text-slate-800 text-center mb-6">${slide.title}</h3>
+                <div>${slide.content}</div>
+            `;
+            document.getElementById('tutorial-slide-content').innerHTML = slideHtml;
+
+            // Atur tombol
+            document.getElementById('btn-prev-slide').disabled = currentSlide === 0;
+            const nextBtn = document.getElementById('btn-next-slide');
+            if (currentSlide === tutorialSlides.length - 1) {
+                nextBtn.textContent = "Selesai Belajar";
+                nextBtn.onclick = () => showScreen('home');
+            } else {
+                nextBtn.textContent = "Lanjut";
+                nextBtn.onclick = () => changeSlide(1);
+            }
+
+            // Render Dots
+            let dotsHtml = '';
+            for (let i = 0; i < tutorialSlides.length; i++) {
+                dotsHtml += `
+                    <span class="w-2.5 h-2.5 rounded-full transition-colors ${i === currentSlide ? 'bg-sky-500' : 'bg-slate-300'}"></span>
+                `;
+            }
+            document.getElementById('slide-dots').innerHTML = dotsHtml;
+        }
+
+        function changeSlide(direction) {
+            currentSlide += direction;
+            if (currentSlide < 0) currentSlide = 0;
+            if (currentSlide >= tutorialSlides.length) currentSlide = tutorialSlides.length - 1;
+            renderSlide();
+        }
+
+        // --- LOGIKA MODUL LABORATORIUM (MAKER) ---
+        const makerLevels = [
+            {
+                instruction: "Toko Olahraga Jaya mendata stok bola yang terjual minggu ini. Buatlah piktogram yang mewakili data tersebut!",
+                col1: "Jenis Bola",
+                col2: "Jumlah Terjual",
+                emoji: "⚽",
+                scale: 5,
+                scaleText: "1 Bola mewakili 5 Bola Terjual",
+                data: [
+                    { category: "Sepak Bola", value: 15 },
+                    { category: "Basket", value: 25 },
+                    { category: "Kasti", value: 10 },
+                    { category: "Futsal", value: 5 }
+                ]
+            },
+            {
+                instruction: "Para petani sayur sedang menghitung keranjang hasil panen wortel segar mereka. Bantu mereka membuat laporannya!",
+                col1: "Nama Kebun",
+                col2: "Hasil Panen (Keranjang)",
+                emoji: "🥕",
+                scale: 10,
+                scaleText: "1 Wortel mewakili 10 Keranjang Wortel",
+                data: [
+                    { category: "Kebun Hijau", value: 30 },
+                    { category: "Kebun Berkah", value: 45, allowHalf: true }, // 4.5 wortel
+                    { category: "Kebun Subur", value: 20 },
+                    { category: "Kebun Indah", value: 35, allowHalf: true }  // 3.5 wortel
+                ]
+            }
+        ];
+
+        let currentMakerLevel = 0;
+        let makerUserValues = []; // Menyimpan berapa banyak simbol yang dipilih user untuk tiap baris
+
+        function startMaker() {
+            currentMakerLevel = 0;
+            initMakerLevel();
+            showScreen('maker');
+        }
+
+        function initMakerLevel() {
+            const level = makerLevels[currentMakerLevel];
+            document.getElementById('maker-instruction').innerHTML = `
+                <strong class="text-emerald-700 block text-sm mb-1">Misi ${currentMakerLevel + 1}:</strong> ${level.instruction}
+            `;
+            document.getElementById('maker-table-header-col1').textContent = level.col1;
+            document.getElementById('maker-table-header-col2').textContent = level.col2;
+            document.getElementById('maker-scale-info').textContent = level.scaleText;
+            document.getElementById('maker-chart-title').textContent = `${level.emoji} Piktogram Buatanmu`;
+
+            // Isi tabel data target
+            let tableHtml = '';
+            level.data.forEach(item => {
+                tableHtml += `
+                    <tr>
+                        <td class="px-4 py-2.5 text-slate-700">${item.category}</td>
+                        <td class="px-4 py-2.5 text-center text-emerald-600 font-extrabold">${item.value}</td>
+                    </tr>
+                `;
+            });
+            document.getElementById('maker-table-body').innerHTML = tableHtml;
+
+            // Reset user values. Kita menyimpan dalam bentuk desimal (misal 1, 1.5, 2, dll jika allowHalf true)
+            makerUserValues = level.data.map(() => 0);
+
+            renderInteractivePictogram();
+        }
+
+        function renderInteractivePictogram() {
+            const level = makerLevels[currentMakerLevel];
+            const area = document.getElementById('maker-pictogram-area');
+            area.innerHTML = '';
+
+            level.data.forEach((item, index) => {
+                const userVal = makerUserValues[index]; // jumlah simbol (bisa float seperti 3.5)
+                
+                // Siapkan tampilan simbol-simbol di layar
+                let symbolsHtml = '';
+                
+                // Gambar simbol utuh
+                const fullSymbols = Math.floor(userVal);
+                for (let i = 0; i < fullSymbols; i++) {
+                    symbolsHtml += `<span class="text-2xl md:text-3xl filter drop-shadow animate-bounce-slow" style="animation-delay: ${i * 0.1}s">${level.emoji}</span>`;
+                }
+                
+                // Gambar simbol setengah (jika ada sisa desimal 0.5)
+                const hasHalf = (userVal % 1) !== 0;
+                if (hasHalf) {
+                    symbolsHtml += `
+                        <span class="inline-block text-2xl md:text-3xl opacity-60 overflow-hidden w-[15px] md:w-[20px] filter drop-shadow transform origin-left">
+                            ${level.emoji}
+                        </span>
+                    `;
+                }
+
+                // Placeholder jika masih kosong
+                if (userVal === 0) {
+                    symbolsHtml = `<span class="text-xs text-slate-400 italic font-normal">Belum ada data...</span>`;
+                }
+
+                const rowHtml = `
+                    <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-200 pb-3 space-y-2 md:space-y-0">
+                        <div class="w-full md:w-1/3 font-bold text-slate-700 flex items-center">
+                            <span class="inline-block w-2.5 h-2.5 bg-emerald-500 rounded-full mr-2"></span>
+                            ${item.category}
+                        </div>
+                        
+                        <div class="w-full md:w-1/2 flex items-center bg-white border border-slate-200 p-2.5 rounded-xl min-h-[50px] space-x-1.5 flex-wrap">
+                            ${symbolsHtml}
+                        </div>
+                        
+                        <div class="flex items-center space-x-2">
+                            <button onclick="changeUserSymbol(${index}, -0.5)" class="bg-rose-100 hover:bg-rose-200 border-b-2 border-rose-400 text-rose-700 font-extrabold w-8 h-8 rounded-full flex items-center justify-center transition">
+                                -½
+                            </button>
+                            <button onclick="changeUserSymbol(${index}, -1)" class="bg-rose-500 hover:bg-rose-600 border-b-2 border-rose-700 text-white font-extrabold w-8 h-8 rounded-full flex items-center justify-center transition">
+                                -1
+                            </button>
+                            <span class="w-8 text-center font-black text-slate-700 text-sm">${userVal}</span>
+                            <button onclick="changeUserSymbol(${index}, 1)" class="bg-emerald-500 hover:bg-emerald-600 border-b-2 border-emerald-700 text-white font-extrabold w-8 h-8 rounded-full flex items-center justify-center transition">
+                                +1
+                            </button>
+                            <button onclick="changeUserSymbol(${index}, 0.5)" class="bg-emerald-100 hover:bg-emerald-200 border-b-2 border-emerald-400 text-emerald-700 font-extrabold w-8 h-8 rounded-full flex items-center justify-center transition">
+                                +½
+                            </button>
+                        </div>
+                    </div>
+                `;
+                area.innerHTML += rowHtml;
+            });
+        }
+
+        function changeUserSymbol(index, amount) {
+            const level = makerLevels[currentMakerLevel];
+            let newVal = makerUserValues[index] + amount;
+            
+            // Batasan minimum adalah 0
+            if (newVal < 0) newVal = 0;
+            
+            // Batasan maksimum (biar tidak memenuhi layar)
+            if (newVal > 15) newVal = 15;
+
+            makerUserValues[index] = newVal;
+            renderInteractivePictogram();
+        }
+
+        function resetMaker() {
+            makerUserValues = makerLevels[currentMakerLevel].data.map(() => 0);
+            renderInteractivePictogram();
+        }
+
+        function checkMakerAnswer() {
+            const level = makerLevels[currentMakerLevel];
+            let allCorrect = true;
+
+            for (let i = 0; i < level.data.length; i++) {
+                const targetValue = level.data[i].value;
+                const scale = level.scale;
+                const userSymbols = makerUserValues[i];
+                
+                // Kalkulasi nilai piktogram buatan user
+                const calculatedValue = userSymbols * scale;
+
+                if (calculatedValue !== targetValue) {
+                    allCorrect = false;
+                    break;
+                }
+            }
+
+            if (allCorrect) {
+                soundEffects.playCorrect();
+                globalScore += 50;
+                document.getElementById('globalScore').textContent = globalScore;
+
+                if (currentMakerLevel < makerLevels.length - 1) {
+                    showModal(
+                        "Luar Biasa!", 
+                        "Piktogram buatanmu di Lab sangat presisi dan tepat sesuai tabel data. Ayo kita lanjut ke tingkat berikutnya!", 
+                        "🎉🧪", 
+                        "Tingkat Selanjutnya", 
+                        "bg-emerald-500 hover:bg-emerald-600", 
+                        "border-emerald-400", 
+                        () => {
+                            currentMakerLevel++;
+                            initMakerLevel();
+                        }
+                    );
+                } else {
+                    showModal(
+                        "Laboratorium Selesai!", 
+                        "Selamat! Kamu berhasil membuktikan bahwa kamu mampu menyusun piktogram mandiri dengan skala bulat maupun pecahan setengah. Siap untuk misi lapangan?", 
+                        "🏆🕵️‍♂️", 
+                        "Mulai Tantangan Detektif", 
+                        "bg-indigo-500 hover:bg-indigo-600", 
+                        "border-indigo-400", 
+                        () => {
+                            startQuiz();
+                        }
+                    );
+                }
+            } else {
+                soundEffects.playWrong();
+                showModal(
+                    "Opps, Belum Tepat!", 
+                    "Oh tidak, kalkulasi piktogrammu belum cocok dengan tabel data sasaran. Periksa kembali perkalian jumlah simbol dengan skala kuncinya ya!", 
+                    "💡🔎", 
+                    "Coba Perbaiki", 
+                    "bg-amber-500 hover:bg-amber-600", 
+                    "border-amber-400"
+                );
+            }
+        }
+
+        // --- LOGIKA MODUL MISI DETEKTIF (QUIZ) ---
+        const quizCases = [
+            {
+                caseTitle: "Kasus 1: Misteri Penjualan Es Krim",
+                caseDesc: "Bantu Kakak Penjual Es Krim memverifikasi hasil penjualan rasa favorit anak-anak di taman.",
+                emoji: "🍦",
+                scale: 4,
+                scaleText: "Keterangan Kunci: 1 Es Krim (🍦) mewakili 4 buah es krim asli",
+                chartData: [
+                    { category: "Cokelat", value: 4 },  // 16 es krim
+                    { category: "Stroberi", value: 3 }, // 12 es krim
+                    { category: "Vanila", value: 2.5 }, // 10 es krim
+                    { category: "Melon", value: 1.5 }  // 6 es krim
+                ],
+                questions: [
+                    {
+                        question: "Berapakah jumlah es krim rasa Cokelat yang terjual berdasarkan diagram?",
+                        options: ["4 Buah", "8 Buah", "16 Buah", "12 Buah"],
+                        answer: 2, // 16 Buah
+                        explanation: "Kunci diagram adalah 1 🍦 = 4 es krim. Karena Cokelat memiliki 4 simbol utuh, maka 4 × 4 = 16 buah."
+                    },
+                    {
+                        question: "Berapakah jumlah es krim rasa Vanila yang terjual di taman?",
+                        options: ["10 Buah", "8 Buah", "9 Buah", "6 Buah"],
+                        answer: 0, // 10 Buah
+                        explanation: "Vanila memiliki 2 simbol utuh (2 × 4 = 8) ditambah 1 simbol setengah (setengah dari 4 adalah 2). Jadi 8 + 2 = 10 buah."
+                    },
+                    {
+                        question: "Hari ini rasa apa yang paling sedikit disukai (terjual paling sedikit) oleh pembeli?",
+                        options: ["Stroberi", "Melon", "Vanila", "Cokelat"],
+                        answer: 1, // Melon
+                        explanation: "Berdasarkan diagram, Melon memiliki simbol paling sedikit yaitu hanya 1.5 simbol (setara dengan 6 buah es krim)."
+                    }
+                ]
+            },
+            {
+                caseTitle: "Kasus 2: Hasil Panen Apel Paman Sam",
+                caseDesc: "Membantu Paman Sam mencocokkan total kiriman peti berisi buah apel segar dari tiga kebun berbeda.",
+                emoji: "🍎",
+                scale: 10,
+                scaleText: "Keterangan Kunci: 1 Apel (🍎) mewakili 10 peti apel",
+                chartData: [
+                    { category: "Kebun Utara", value: 5 },    // 50 peti
+                    { category: "Kebun Selatan", value: 3.5 },  // 35 peti
+                    { category: "Kebun Timur", value: 6 }      // 60 peti
+                ],
+                questions: [
+                    {
+                        question: "Berapakah jumlah peti apel yang berhasil dipanen dari Kebun Selatan?",
+                        options: ["30 peti", "35 peti", "40 peti", "45 peti"],
+                        answer: 1, // 35 peti
+                        explanation: "Kebun Selatan memiliki 3 simbol utuh (3 × 10 = 30) ditambah setengah simbol apel (setengah dari 10 adalah 5). Jadi 30 + 5 = 35 peti."
+                    },
+                    {
+                        question: "Berapakah selisih (perbedaan) hasil panen antara Kebun Timur dan Kebun Utara?",
+                        options: ["10 peti", "5 peti", "20 peti", "15 peti"],
+                        answer: 0, // 10 peti
+                        explanation: "Kebun Timur menghasilkan 60 peti (6 × 10). Kebun Utara menghasilkan 50 peti (5 × 10). Selisihnya adalah 60 - 50 = 10 peti."
+                    },
+                    {
+                        question: "Berapakah TOTAL keseluruhan peti apel yang dipanen dari ketiga kebun Paman Sam?",
+                        options: ["145 peti", "135 peti", "150 peti", "125 peti"],
+                        answer: 0, // 145 peti
+                        explanation: "Total simbol seluruhnya adalah 5 + 3.5 + 6 = 14.5 simbol. Dengan skala 1 simbol = 10 peti, maka 14.5 × 10 = 145 peti apel."
+                    }
+                ]
+            },
+            {
+                caseTitle: "Kasus 3: Koperasi Buku Kreatif",
+                caseDesc: "Menyelidiki jumlah buku tematik kurikulum merdeka yang disalurkan ke perpustakaan sekolah.",
+                emoji: "📘",
+                scale: 20,
+                scaleText: "Keterangan Kunci: 1 Buku (📘) mewakili 20 eksemplar buku",
+                chartData: [
+                    { category: "Buku IPA", value: 4 },    // 80
+                    { category: "Buku IPS", value: 2.5 },  // 50
+                    { category: "Buku MTK", value: 6 },    // 120
+                    { category: "Buku PKN", value: 3 }     // 60
+                ],
+                questions: [
+                    {
+                        question: "Buku mata pelajaran apakah yang disalurkan paling banyak oleh Koperasi?",
+                        options: ["Buku PKN", "Buku IPA", "Buku MTK", "Buku IPS"],
+                        answer: 2, // Buku MTK
+                        explanation: "Buku Matematika (MTK) memiliki simbol terbanyak yaitu 6 simbol (120 eksemplar)."
+                    },
+                    {
+                        question: "Jika perpustakaan membutuhkan 100 eksemplar Buku IPA, berapa banyak buku yang masih kurang?",
+                        options: ["20 Buku", "10 Buku", "30 Buku", "Buku Sudah Cukup"],
+                        answer: 0, // 20 Buku
+                        explanation: "IPA saat ini disalurkan sebanyak 4 simbol × 20 = 80 buku. Kebutuhannya 100 buku, sehingga kurang 100 - 80 = 20 buku."
+                    },
+                    {
+                        question: "Berapakah jumlah buku IPS dan PKN jika digabungkan bersama?",
+                        options: ["100 Buku", "120 Buku", "110 Buku", "90 Buku"],
+                        answer: 2, // 110 Buku
+                        explanation: "IPS memiliki 2.5 simbol (50 buku) dan PKN memiliki 3 simbol (60 buku). Digabungkan: 50 + 60 = 110 Buku."
+                    }
+                ]
+            }
+        ];
+
+        let activeCaseIndex = 0;
+        let activeQuestionIndex = 0;
+
+        function startQuiz() {
+            activeCaseIndex = 0;
+            activeQuestionIndex = 0;
+            initQuizCase();
+            showScreen('quiz');
+        }
+
+        function initQuizCase() {
+            const currentCase = quizCases[activeCaseIndex];
+            
+            // Perbarui UI Judul Kasus
+            document.getElementById('quiz-case-title').textContent = currentCase.caseTitle;
+            document.getElementById('quiz-case-desc').textContent = currentCase.caseDesc;
+            document.getElementById('quiz-scale-legend').innerHTML = `<strong>Kunci Rahasia:</strong> 1 Simbol ${currentCase.emoji} mewakili <strong>${currentCase.scale}</strong> unit asli.`;
+            document.getElementById('quiz-case-index').textContent = activeCaseIndex + 1;
+            document.getElementById('quiz-case-total').textContent = quizCases.length;
+
+            // Render Piktogram Kasus
+            renderQuizPictogram(currentCase);
+
+            // Tampilkan pertanyaan
+            initQuizQuestion();
+            updateQuizProgressBar();
+        }
+
+        function renderQuizPictogram(cCase) {
+            const chartArea = document.getElementById('quiz-chart-area');
+            chartArea.innerHTML = '';
+
+            cCase.chartData.forEach((item, idx) => {
+                let symbolsHtml = '';
+                const fullCount = Math.floor(item.value);
+                
+                // Simbol utuh
+                for (let i = 0; i < fullCount; i++) {
+                    symbolsHtml += `<span class="text-2xl md:text-3xl filter drop-shadow animate-bounce-slow" style="animation-delay: ${i * 0.15}s">${cCase.emoji}</span>`;
+                }
+
+                // Simbol setengah
+                if (item.value % 1 !== 0) {
+                    symbolsHtml += `
+                        <span class="inline-block text-2xl md:text-3xl opacity-60 overflow-hidden w-[15px] md:w-[20px] filter drop-shadow">
+                            ${cCase.emoji}
+                        </span>
+                    `;
+                }
+
+                const barHtml = `
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                        <div class="w-1/4 font-extrabold text-xs md:text-sm text-slate-600">${item.category}</div>
+                        <div class="w-3/4 flex items-center space-x-1 flex-wrap p-1.5 bg-white rounded-lg min-h-[44px]">
+                            ${symbolsHtml}
+                        </div>
+                    </div>
+                `;
+                chartArea.innerHTML += barHtml;
+            });
+        }
+
+        function initQuizQuestion() {
+            const cCase = quizCases[activeCaseIndex];
+            const qData = cCase.questions[activeQuestionIndex];
+
+            // Teks soal & nomor
+            document.getElementById('question-number-badge').textContent = `Soal ${activeQuestionIndex + 1} dari ${cCase.questions.length}`;
+            document.getElementById('quiz-question-text').textContent = qData.question;
+
+            // Pilihan ganda
+            const optionsContainer = document.getElementById('quiz-options-container');
+            optionsContainer.innerHTML = '';
+
+            qData.options.forEach((option, index) => {
+                const optBtn = document.createElement('button');
+                optBtn.className = "w-full text-left bg-slate-50 hover:bg-indigo-50 border-2 border-slate-200 hover:border-indigo-400 p-3.5 rounded-2xl font-bold text-slate-700 transition flex items-center justify-between group";
+                optBtn.innerHTML = `
+                    <span class="flex items-center">
+                        <span class="w-8 h-8 rounded-full bg-slate-200 group-hover:bg-indigo-200 text-slate-800 group-hover:text-indigo-800 flex items-center justify-center font-black mr-3 transition-colors text-sm">
+                            ${String.fromCharCode(65 + index)}
+                        </span>
+                        <span>${option}</span>
+                    </span>
+                    <span class="opacity-0 group-hover:opacity-100 transition-opacity text-indigo-500">Pilih ➡️</span>
+                `;
+                optBtn.onclick = () => selectAnswer(index);
+                optionsContainer.appendChild(optBtn);
+            });
+        }
+
+        function updateQuizProgressBar() {
+            const totalQuestions = quizCases.reduce((sum, c) => sum + c.questions.length, 0);
+            
+            // Hitung jumlah soal yang sudah dilalui
+            let progressIndex = 0;
+            for (let i = 0; i < activeCaseIndex; i++) {
+                progressIndex += quizCases[i].questions.length;
+            }
+            progressIndex += activeQuestionIndex;
+
+            const percentage = (progressIndex / totalQuestions) * 100;
+            document.getElementById('quiz-progress').style.width = `${percentage}%`;
+        }
+
+        function selectAnswer(userChoice) {
+            const cCase = quizCases[activeCaseIndex];
+            const qData = cCase.questions[activeQuestionIndex];
+
+            if (userChoice === qData.answer) {
+                // Jawaban Benar
+                soundEffects.playCorrect();
+                globalScore += 100;
+                document.getElementById('globalScore').textContent = globalScore;
+
+                showModal(
+                    "Jawaban Benar! 🎉", 
+                    qData.explanation, 
+                    "🕵️‍♂️✨", 
+                    "Pertanyaan Berikutnya", 
+                    "bg-indigo-500 hover:bg-indigo-600", 
+                    "border-indigo-400", 
+                    () => {
+                        advanceQuiz();
+                    }
+                );
+            } else {
+                // Jawaban Salah
+                soundEffects.playWrong();
+                showModal(
+                    "Wah, Kurang Tepat!", 
+                    `Kunci Analisis: ${qData.explanation}`, 
+                    "❌🔍", 
+                    "Selesai Membaca Petunjuk", 
+                    "bg-rose-500 hover:bg-rose-600", 
+                    "border-rose-400", 
+                    () => {
+                        advanceQuiz();
+                    }
+                );
+            }
+        }
+
+        function advanceQuiz() {
+            const cCase = quizCases[activeCaseIndex];
+            
+            // Berpindah pertanyaan
+            if (activeQuestionIndex < cCase.questions.length - 1) {
+                activeQuestionIndex++;
+                initQuizQuestion();
+                updateQuizProgressBar();
+            } else {
+                // Selesai satu kasus, maju ke kasus berikutnya
+                if (activeCaseIndex < quizCases.length - 1) {
+                    soundEffects.playLevelUp();
+                    showModal(
+                        "Kasus Berhasil Dipecahkan!", 
+                        "Selamat Detektif, kamu berhasil membantu warga memecahkan misteri diagram di kasus ini. Selanjutnya, kasus yang lebih menantang menantimu!", 
+                        "🏆🧩", 
+                        "Mulai Kasus Baru", 
+                        "bg-teal-500 hover:bg-teal-600", 
+                        "border-teal-400", 
+                        () => {
+                            activeCaseIndex++;
+                            activeQuestionIndex = 0;
+                            initQuizCase();
+                        }
+                    );
+                } else {
+                    // Semua kasus selesai! Pamerkan sertifikat kelulusan
+                    soundEffects.playLevelUp();
+                    showModal(
+                        "Akademi Detektif Lulus!", 
+                        "Kombinasi analisis tajam dan ketelitian matematikamu sungguh menakjubkan. Kota ini aman berkat data akuratmu!", 
+                        "🏅👑", 
+                        "Lihat Sertifikat Kelulusan", 
+                        "bg-amber-500 hover:bg-amber-600", 
+                        "border-amber-400", 
+                        () => {
+                            generateCertificate();
+                        }
+                    );
+                }
+            }
+        }
+
+        function generateCertificate() {
+            // Tulis tanggal saat ini di sertifikat
+            const today = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = today.toLocaleDateString('id-ID', options);
+            document.getElementById('cert-date').textContent = formattedDate;
+
+            showScreen('certificate');
+        }
+
+        // On Load setup
+        window.onload = function() {
+            showScreen('home');
+        };
+    </script>
+</body>
+</html>
